@@ -1,5 +1,6 @@
 extern crate colored;
 extern crate text_io;
+
 use colored::*;
 use text_io::read;
 
@@ -25,11 +26,20 @@ fn is_empty_cell(board: &Board, index: usize) -> bool {
     board[index] != 'X' && board[index] != 'O'
 }
 
+fn winner(player_turn: &String) {
+    println!(
+        "{} {} {}",
+        " ###### Fim de jogo,".yellow(),
+        player_turn.yellow(),
+        "ganhou! ######".yellow()
+    );
+}
+
 fn game() {
     let mut board: Board = vec!['1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let mut turn: char = 'X';
     let mut count: i32 = 0;
-    let mut finished: bool = false;
+    let mut game_over: bool = false;
 
     println!("{}", "Insira o nome do primeiro jogador: ".yellow());
     let player1: String = read!();
@@ -38,7 +48,7 @@ fn game() {
     let player2: String = read!();
     let mut player_turn = &player1;
 
-    while !finished {
+    while !game_over {
         print_board(&mut board);
 
         println!(
@@ -47,6 +57,7 @@ fn game() {
             turn,
             ", insira um inteiro entre 1 e 9:".green()
         );
+
         let mut choice: usize = read!();
         choice -= 1;
 
@@ -65,86 +76,46 @@ fn game() {
             // horizontal
             if board[6] == board[7] && board[7] == board[8] && !is_empty_cell(&board, 8) {
                 print_board(&mut board);
-                println!(
-                    "{} {} {}",
-                    " ###### Fim de jogo,".yellow(),
-                    player_turn.yellow(),
-                    "ganhou! ######".yellow()
-                );
-                finished = true;
+                winner(player_turn);
+                game_over = true;
             } else if board[3] == board[4] && board[4] == board[5] && !is_empty_cell(&board, 5) {
                 print_board(&mut board);
-                println!(
-                    "{} {} {}",
-                    " ###### Fim de jogo,".yellow(),
-                    player_turn.yellow(),
-                    "ganhou! ######".yellow()
-                );
-                finished = true;
+                winner(player_turn);
+                game_over = true;
             } else if board[0] == board[1] && board[1] == board[2] && !is_empty_cell(&board, 2) {
                 print_board(&mut board);
-                println!(
-                    "{} {} {}",
-                    " ###### Fim de jogo,".yellow(),
-                    player_turn.yellow(),
-                    "ganhou! ######".yellow()
-                );
-                finished = true;
+                winner(player_turn);
+                game_over = true;
 
                 // vertical
             } else if board[0] == board[3] && board[3] == board[6] && !is_empty_cell(&board, 6) {
                 print_board(&mut board);
-                println!(
-                    "{} {} {}",
-                    " ###### Fim de jogo,".yellow(),
-                    player_turn.yellow(),
-                    "ganhou! ######".yellow()
-                );
-                finished = true;
+                winner(player_turn);
+                game_over = true;
             } else if board[1] == board[4] && board[4] == board[7] && !is_empty_cell(&board, 7) {
                 print_board(&mut board);
-                println!(
-                    "{} {} {}",
-                    " ###### Fim de jogo,".yellow(),
-                    player_turn.yellow(),
-                    "ganhou! ######".yellow()
-                );
-                finished = true;
+                winner(player_turn);
+                game_over = true;
             } else if board[2] == board[5] && board[5] == board[8] && !is_empty_cell(&board, 8) {
                 print_board(&mut board);
-                println!(
-                    "{} {} {}",
-                    " ###### Fim de jogo,".yellow(),
-                    player_turn.yellow(),
-                    "ganhou! ######".yellow()
-                );
-                finished = true;
+                winner(player_turn);
+                game_over = true;
 
                 // diagonal
             } else if board[0] == board[4] && board[4] == board[8] && !is_empty_cell(&board, 8) {
                 print_board(&mut board);
-                println!(
-                    "{} {} {}",
-                    " ###### Fim de jogo,".yellow(),
-                    player_turn.yellow(),
-                    "ganhou! ######".yellow()
-                );
-                finished = true;
+                winner(player_turn);
+                game_over = true;
             } else if board[2] == board[4] && board[4] == board[6] && !is_empty_cell(&board, 6) {
                 print_board(&mut board);
-                println!(
-                    "{} {} {}",
-                    " ###### Fim de jogo,".yellow(),
-                    player_turn.yellow(),
-                    "ganhou! ######".yellow()
-                );
-                finished = true;
+                winner(player_turn);
+                game_over = true;
             }
         }
 
         if count == 9 {
-            println!("{}", " ###### Fim de jogo, foi um empate! #####".blue(),);
-            finished = true;
+            println!("{}", " ###### Fim de jogo, foi um empate! #####".blue());
+            game_over = true;
         }
 
         if turn == 'X' {
